@@ -930,7 +930,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: e5f3a4ebf9c02284284d90495556d862, type: 2}
+  m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
 --- !u!4 &1452655516
 Transform:
@@ -961,7 +961,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpawnOnStart: 1
   SeedValue: 0
-  PrefabsToSpawn: []
+  PrefabsToSpawn:
+  - Labels: 8088
+    Prefabs:
+    - {fileID: 506071682316071823, guid: 77a41ec5e9ad34849b173bb373fb0648, type: 3}
+    PrefabSelection: 0
+    MatchAspectRatio: 0
+    CalculateFacingDirection: 0
+    Scaling: 0
+    Alignment: 0
+    IgnorePrefabSize: 0
 --- !u!1 &1467068151
 GameObject:
   m_ObjectHideFlags: 0
@@ -1094,6 +1103,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MRUK
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44,
+        type: 3}
+      propertyPath: SceneSettings.RoomIndex
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3613868102660323786, guid: c2e00db6d2dfa42ac8d821db8d493a44,
         type: 3}

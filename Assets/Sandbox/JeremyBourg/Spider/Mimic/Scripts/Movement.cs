@@ -8,131 +8,110 @@ namespace MimicSpace
     public class Movement : MonoBehaviour
     {
         [Header("Controls")]
-        [Tooltip("Body Height from ground")]
-        [Range(0.01f, 5f)]
-        public float height = 0.8f; // Hauteur du corps par rapport au sol
+        public Transform crystalTarget; // Cible du cristal
+        public NavMeshAgent agent; // L'agent NavMesh
         public float speed = 5f; // Vitesse de déplacement
-        public float velocityLerpCoef = 4f; // Coefficient de lissage de la vélocité
-        public float jumpForce = 5f; // Force du saut
-        public float gravity = -9.81f; // Force de la gravité
-        public float jumpHeight = 1.5f; // Hauteur maximale du saut pour atteindre le cristal
-        public Transform crystalTarget; // Position du cristal cible
-        public NavMeshAgent agent; // L'agent de navigation (NavMeshAgent)
+        public float jumpForce = 5f; // Force du saut (lévitation)
+        public float levitationHeight = 2f; // Hauteur à atteindre pour léviter au-dessus de l'obstacle
+        public float stuckThreshold = 1f; // Seuil pour détecter si l'agent est coincé
 
-        private bool isJumping = false; // Est-ce que le Mimic est en train de sauter ?
-        private bool isLevitating = false; // Est-ce que le Mimic est en train de léviter ?
-        private bool isAttached = false; // Est-ce que le Mimic est attaché au cristal ?
-        private float currentJumpHeight = 0f; // Hauteur actuelle du saut
-        private Mimic myMimic; // Référence au Mimic pour contrôler les jambes et la vitesse
+        private bool isLevitating = false; // Est-ce que l'araignée est en train de léviter ?
+        private bool isAttachedToObstacle = false; // Est-ce que l'araignée est attachée à un obstacle ?
+        private float lastDistanceToDestination = 0f; // Distance entre l'agent et sa destination lors de la dernière mise à jour
+        private float stuckTime = 0f; // Temps écoulé depuis que l'agent est coincé
+        private Mimic myMimic;
 
         private void Start()
         {
             myMimic = GetComponent<Mimic>();
-            crystalTarget = GameObject.FindGameObjectWithTag("Crystal").transform; // Chercher le cristal par son tag
+            crystalTarget = GameObject.FindGameObjectWithTag("Crystal").transform; // Récupérer le cristal par son tag
             agent = GetComponent<NavMeshAgent>(); // Récupérer le NavMeshAgent
-            agent.stoppingDistance = 1f; // Définir la distance à laquelle l'agent s'arrête près du cristal
-            agent.speed = speed; // Assigner la vitesse du NavMeshAgent
+            agent.speed = speed; // Assigner la vitesse à l'agent
+            agent.stoppingDistance = 1f; // Distance de stop à atteindre avant de considérer que l'agent est arrivé
+            agent.SetDestination(crystalTarget.position); // Définir la destination vers le cristal
         }
 
         void Update()
         {
-            // Calculer la direction horizontale vers le cristal
-            Vector3 targetDirection = (crystalTarget.position - transform.position).normalized;
-            float distanceToCrystal = Vector3.Distance(transform.position, crystalTarget.position);
-            bool isAboveCrystal = transform.position.y >= crystalTarget.position.y;
+            // Vérifier si l'agent est bloqué
+            CheckIfStuck();
 
-            // Vérifier si un obstacle bloque le Mimic
-            RaycastHit hit;
-            bool hitObstacle = Physics.Raycast(transform.position, targetDirection, out hit, 2f);
-
-            // Si un obstacle est détecté et que le Mimic est proche du cristal, il va commencer à léviter et s'attacher
-            if (hitObstacle && !isAttached)
+            // Si l'agent est coincé et n'arrive pas à avancer, on le fait léviter
+            if (isLevitating)
             {
-                StartLevitating(hit.collider.transform);
-            }
-
-            // Si on est proche du cristal et qu'on n'est pas déjà attaché, commence le saut
-            if (!isJumping && !hitObstacle && distanceToCrystal < 2f && !isAboveCrystal)
-            {
-                isJumping = true;
-                currentJumpHeight = 0f;
-                agent.isStopped = true; // Arrêter l'agent de se déplacer pendant le saut
-            }
-
-            // Si le Mimic est en train de sauter
-            if (isJumping)
-            {
-                // Logique du saut : augmenter la hauteur jusqu'à atteindre la hauteur cible
-                currentJumpHeight += jumpForce * Time.deltaTime;
-
-                // Si la hauteur maximale est atteinte, arrêter le saut
-                if (currentJumpHeight >= jumpHeight)
-                {
-                    isJumping = false;
-                    currentJumpHeight = jumpHeight;
-                    agent.isStopped = false; // Relancer l'agent une fois que le saut est terminé
-                }
-
-                // Appliquer le mouvement vertical (saut)
-                agent.velocity = new Vector3(agent.velocity.x, jumpForce * Time.deltaTime, agent.velocity.z); // Changer seulement la composante Y (verticale)
-            }
-            else if (isLevitating)
-            {
-                // Si on est en lévitation, on applique un mouvement vertical
-                agent.velocity = new Vector3(agent.velocity.x, gravity * Time.deltaTime, agent.velocity.z); // On laisse la gravité fonctionner normalement
+                HandleLevitatingMovement();
             }
             else
             {
-                // Sinon, déplacer l'agent horizontalement vers le cristal
+                // Si l'agent n'est pas coincé, continue de se diriger vers le cristal
                 agent.SetDestination(crystalTarget.position);
             }
 
-            // Vérifier si le Mimic a atteint la cible (le cristal) pour déclencher l'explosion
-            if (distanceToCrystal < 1f && !isAttached)
+            // Vérifier si l'agent est suffisamment proche du cristal pour s'attacher
+            if (Vector3.Distance(transform.position, crystalTarget.position) < 1f && !isAttachedToObstacle)
             {
                 AttachToCrystal();
             }
+        }
 
-            // Réajuster la hauteur pour s'assurer que le Mimic reste à la bonne hauteur par rapport au sol
-            RaycastHit groundHit;
-            Vector3 destHeight = transform.position;
+        // Vérifier si l'agent est coincé par un obstacle
+        void CheckIfStuck()
+        {
+            float currentDistanceToDestination = Vector3.Distance(transform.position, crystalTarget.position);
 
-            // Utiliser un raycast pour vérifier la position du sol en dessous du Mimic
-            if (Physics.Raycast(transform.position + Vector3.up * 5f, -Vector3.up, out groundHit))
+            // Si la distance n'a pas changé depuis un certain temps, l'agent est probablement coincé
+            if (Mathf.Abs(lastDistanceToDestination - currentDistanceToDestination) < stuckThreshold)
             {
-                destHeight = new Vector3(transform.position.x, groundHit.point.y + height, transform.position.z);
+                stuckTime += Time.deltaTime;
+            }
+            else
+            {
+                stuckTime = 0f;
             }
 
-            // Lerp la hauteur pour la rendre plus fluide
-            transform.position = Vector3.Lerp(transform.position, destHeight, velocityLerpCoef * Time.deltaTime);
+            lastDistanceToDestination = currentDistanceToDestination;
+
+            // Si l'agent est coincé pendant plus d'une seconde, on le fait léviter
+            if (stuckTime > 1f && !isLevitating)
+            {
+                isLevitating = true;
+                agent.isStopped = true; // Stopper l'agent
+            }
         }
 
-        void StartLevitating(Transform obstacle)
+        // Gestion du mouvement en lévitation
+        void HandleLevitatingMovement()
         {
-            // Arrêter le mouvement horizontal
-            agent.isStopped = true;
+            // Déplacement vers la position au-dessus de l'obstacle (dans le cas d'une table, par exemple)
+            Vector3 levitationTarget = new Vector3(transform.position.x, levitationHeight, transform.position.z);
+            transform.position = Vector3.MoveTowards(transform.position, levitationTarget, jumpForce * Time.deltaTime);
 
-            // Démarrer la lévitation
-            isLevitating = true;
+            // Si la position de lévitation est atteinte, on commence à marcher dessus
+            if (Vector3.Distance(transform.position, levitationTarget) < 0.1f)
+            {
+                isAttachedToObstacle = true; // L'araignée est attachée à l'obstacle
+                isLevitating = false; // Arrêter la lévitation
+                agent.isStopped = false; // Relancer l'agent pour qu'il marche sur l'obstacle
+                agent.SetDestination(crystalTarget.position); // Reprendre la destination vers le cristal
+            }
         }
 
+        // Lorsque le Mimic atteint le cristal, il se fixe dessus
         void AttachToCrystal()
         {
-            // Logique pour attacher les jambes au cristal et déclencher l'explosion
-            Debug.Log("Mimic attaché au cristal et prêt à exploser!");
+            Debug.Log("Mimic attaché au cristal !");
+            isAttachedToObstacle = true;
 
-            isAttached = true;
-
-            // Tu peux ici appeler une fonction pour lancer l'explosion
+            // Logique d'explosion ou autre ici
             Explode();
         }
 
+        // Fonction d'explosion (exemple)
         void Explode()
         {
-            // Logique d'explosion lorsque le Mimic atteint le cristal
             Debug.Log("Explosion! Le cristal prend des dégâts!");
 
-            // Tu peux ici ajouter des effets visuels, sonores, ou appliquer des dégâts au cristal
+            // Tu peux ici ajouter des effets visuels, sonores ou appliquer des dégâts au cristal
             // Exemple: ExplosionEffect.Play();
 
             // Détruire l'objet Mimic après l'explosion
