@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class InstanceMover : MonoBehaviour
+public class CanonBullet : MonoBehaviour
 {
     [SerializeField] private GameObject objectToInstantiate;  // The GameObject to instantiate
     [SerializeField] private GameObject target;              // The target to move toward
@@ -74,12 +74,12 @@ public class InstanceMover : MonoBehaviour
     // Detect collision with an object tagged "Tower"
     private void OnCollisionEnter(Collision collision)
     {
-        if (instantiatedObject != null && collision.gameObject.CompareTag("Tower"))
+        if (collision.gameObject.CompareTag("Tower"))
         {
             Destroy(instantiatedObject); // Destroy the instantiated object
         }
 
-        else if (instantiatedObject != null && collision.gameObject.CompareTag("Untagged"))
+        else if (collision.gameObject.CompareTag("Untagged"))
         {
             Destroy(instantiatedObject); // Destroy the instantiated object
         }
