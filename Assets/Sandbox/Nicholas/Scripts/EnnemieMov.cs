@@ -1,12 +1,12 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnnemieMov : MonoBehaviour
 {
+    [SerializeField] private ScriptableTower towerData;
     [SerializeField] private GameObject _target;
-    [SerializeField] private GameObject _bulletPrefab; // Prefab for the bullet
-    [SerializeField] private float _speed;
-    [SerializeField] private float reloadTime = 6f;
+    [SerializeField] private GameObject _bulletPrefab; // Prefab for the bullet    
     private GameObject _targetFirstChild;
     private Vector3 _offset;
     private float _distance;
@@ -16,6 +16,8 @@ public class EnnemieMov : MonoBehaviour
     {
         _offset = new Vector3(0, .8f, 0);
         _targetFirstChild = GameObject.Find("Tower(Clone)");
+
+
     }
 
     void Update()
@@ -26,7 +28,7 @@ public class EnnemieMov : MonoBehaviour
 
         if (_distance > .8f)
         {
-            transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+            transform.Translate(Vector3.forward * towerData.vitesseDeplacement * Time.deltaTime);
         }
         else if (_canShoot)
         {
@@ -59,31 +61,43 @@ public class EnnemieMov : MonoBehaviour
 
     private IEnumerator RespawnBullet()
     {
-        yield return new WaitForSeconds(reloadTime);
+        yield return new WaitForSeconds(towerData.tempsRecharge);
         _canShoot = true;
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        Debug.Log(other.gameObject.name);
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("touché");
+            towerData.nbPointsVies=towerData.nbPointsVies-1;
+            if(towerData.nbPointsVies<1)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 }
 
 public class Bullet : MonoBehaviour
 {
-    private string _targetTag;
     private System.Action _onHitCallback;
 
     public void Initialize(string targetTag, System.Action onHitCallback)
     {
-        _targetTag = targetTag;
         _onHitCallback = onHitCallback;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision other)
     {
-        if (collision.gameObject.CompareTag(_targetTag))
+        if (other.gameObject.CompareTag("Tower"))
         {
             Destroy(gameObject); // Destroy this bullet
             _onHitCallback?.Invoke(); // Trigger the callback to respawn
         }
 
-        else if (collision.gameObject.CompareTag("Untagged"))
+        else if (other.gameObject.CompareTag("Untagged"))
         {
             Destroy(gameObject); // Destroy this bullet
             _onHitCallback?.Invoke(); // Trigger the callback to respawn

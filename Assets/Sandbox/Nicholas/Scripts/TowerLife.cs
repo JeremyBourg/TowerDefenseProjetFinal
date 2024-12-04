@@ -16,12 +16,12 @@ public class TowerLife: MonoBehaviour
     }
 
     // This function is called when another collider enters this object's collider
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision other)
     {
         // Check if the other object has the "Bullet" tag
-        if (collision.gameObject.CompareTag("Bullet"))
+        if (other.gameObject.CompareTag("Bullet"))
         {
-            Debug.Log("NICE");
+            Destroy(other.gameObject);
             // Decrease the points by 1
             points -= 1;
 

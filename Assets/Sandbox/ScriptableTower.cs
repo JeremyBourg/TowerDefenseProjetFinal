@@ -9,6 +9,5 @@ public class ScriptableTower : ScriptableObject
     public float nbPointsDommages;
     public float tempsRecharge;
     public float vitesseDeplacement;
-    public float vitesseMissile;
-  
+    public float vitesseMissile;  
 }

@@ -76,12 +76,12 @@ public class CanonBullet : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Tower"))
         {
-            Destroy(instantiatedObject); // Destroy the instantiated object
+            Destroy(gameObject); // Destroy the instantiated object
         }
 
-        else if (collision.gameObject.CompareTag("Untagged"))
+        else
         {
-            Destroy(instantiatedObject); // Destroy the instantiated object
+            Destroy(gameObject); // Destroy the instantiated object
         }
     }
 }
