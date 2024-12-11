@@ -25,12 +25,18 @@ public class DisplayLabel : MonoBehaviour
     [Tooltip("Détermine si le texte du Gizmo est visible.")]
     [SerializeField] private bool showGizmoLabelText;
 
-    [Header("Tower Spawn")]
-    [Tooltip("Préfabriqué de la tour à instancier.")]
-    [SerializeField] private GameObject towerPrefab;
+    //[Header("Tower Spawn")]
+    //[Tooltip("Préfabriqué de la tour à instancier.")]
+    //[SerializeField] 
+    private GameObject towerPrefab;
+
+    [SerializeField] private GameObject towerPrefab1;
+    [SerializeField] private GameObject towerPrefab2;
 
     [Tooltip("Bouton utilisé pour faire apparaître une tour.")]
     [SerializeField] private OVRInput.Button spawnButton;
+
+    [SerializeField] private selectTour towerSelectScript;
 
     // Variables privées
     private MRUKRoom room; // Référence à la pièce actuelle détectée par MRUK
@@ -135,6 +141,18 @@ public class DisplayLabel : MonoBehaviour
         if (OVRInput.GetDown(spawnButton, controller))
         {
             Instantiate(towerPrefab, hitPoint, Quaternion.identity);
+        }
+    }
+
+    public void ChangeTowerPrefab()
+    {
+        if (towerSelectScript.selectedTower == 1)
+        {
+            towerPrefab = towerPrefab1;
+        }
+        else if (towerSelectScript.selectedTower == 2)
+        {
+            towerPrefab = towerPrefab2;
         }
     }
 }
