@@ -40,6 +40,7 @@ public class DisplayLabel : MonoBehaviour
     [SerializeField] private selectTour towerSelectScript;
 
     // Variables priv�es
+    private bool isCrystalPlaced = false;
     private MRUKRoom room; // R�f�rence � la pi�ce actuelle d�tect�e par MRUK
     private Vector3 hitPoint; // Point d'impact du rayon
 
@@ -141,7 +142,15 @@ public class DisplayLabel : MonoBehaviour
         // V�rifier si le bouton de cr�ation de tour est press�
         if (OVRInput.GetDown(spawnButton, controller))
         {
-            Instantiate(towerPrefab, hitPoint, Quaternion.identity);
+            if(isCrystalPlaced == true && towerSelectScript.selectedTower == 0){
+                return;
+            }
+            else {
+                Instantiate(towerPrefab, hitPoint, Quaternion.identity);
+                if (towerSelectScript.selectedTower == 0){
+                    isCrystalPlaced = true;
+                }
+            }
         }
     }
 
