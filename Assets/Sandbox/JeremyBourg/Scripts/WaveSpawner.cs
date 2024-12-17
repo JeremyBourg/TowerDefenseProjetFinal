@@ -13,10 +13,12 @@ public class WaveSpawner : MonoBehaviour
 
     private int currentWaveIndex = 0;    // Current wave index
     private bool isSpawning = false;     // Is the wave spawner currently active?
+    public bool isGameStarted = false;
 
     void Update()
     {
-        if (!isSpawning && currentWaveIndex < waves.Count)
+        // Only spawn waves if the game has started and no wave is currently spawning
+        if (isGameStarted && !isSpawning && currentWaveIndex < waves.Count)
         {
             StartCoroutine(SpawnWave(waves[currentWaveIndex]));
         }
