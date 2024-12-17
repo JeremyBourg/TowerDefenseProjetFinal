@@ -12368,13 +12368,75 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -5892361802231914273, guid: 92032128fbc365e42883349fa9552564,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8551001
+      objectReference: {fileID: 0}
+    - target: {fileID: -5892361802231914273, guid: 92032128fbc365e42883349fa9552564,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.019352665
+      objectReference: {fileID: 0}
+    - target: {fileID: -5892361802231914273, guid: 92032128fbc365e42883349fa9552564,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.0117227
+      objectReference: {fileID: 0}
+    - target: {fileID: -5892361802231914273, guid: 92032128fbc365e42883349fa9552564,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.51796913
+      objectReference: {fileID: 0}
+    - target: {fileID: -5892361802231914273, guid: 92032128fbc365e42883349fa9552564,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 2.593
+      objectReference: {fileID: 0}
+    - target: {fileID: -5892361802231914273, guid: 92032128fbc365e42883349fa9552564,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -62.41
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 92032128fbc365e42883349fa9552564,
         type: 3}
       propertyPath: m_Name
       value: towerModel
       objectReference: {fileID: 0}
+    - target: {fileID: 6931744863112793022, guid: 92032128fbc365e42883349fa9552564,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7072302
+      objectReference: {fileID: 0}
+    - target: {fileID: 6931744863112793022, guid: 92032128fbc365e42883349fa9552564,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7069834
+      objectReference: {fileID: 0}
+    - target: {fileID: 6931744863112793022, guid: 92032128fbc365e42883349fa9552564,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6931744863112793022, guid: 92032128fbc365e42883349fa9552564,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6931744863112793022, guid: 92032128fbc365e42883349fa9552564,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -89.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 6931744863112793022, guid: 92032128fbc365e42883349fa9552564,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8700725330082129686, guid: 92032128fbc365e42883349fa9552564, type: 3}
+    - {fileID: 5729911309039469940, guid: 92032128fbc365e42883349fa9552564, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92032128fbc365e42883349fa9552564, type: 3}
@@ -25444,12 +25506,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 31b2c16db83d38a498fec758b20e27f8,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -22.7
+      value: -21.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 31b2c16db83d38a498fec758b20e27f8,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5
+      value: -16.8
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 31b2c16db83d38a498fec758b20e27f8,
         type: 3}
@@ -25497,7 +25559,8 @@ PrefabInstance:
       value: towers2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: -3677834118691389365, guid: 31b2c16db83d38a498fec758b20e27f8, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 31b2c16db83d38a498fec758b20e27f8,
