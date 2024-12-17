@@ -5,12 +5,13 @@ using UnityEngine;
 public class WaveSpawner : MonoBehaviour
 {
     public List<WaveData> waves;         // List of wave data
-    public Transform roomCenter;         // Center of the room
-    public Vector3 roomSize;             // Size of the room
-    public float spawnRadius = 0.5f;     // Radius to check for obstacles
+    public string crystalTag = "Crystal"; // Tag of the object around which enemies will spawn
+    public float spawnRadius = 5f;       // Radius of the circle around the "Crystal" to spawn enemies
+    public float spawnHeight = 1f;       // Height offset for spawning (to avoid spawning underground)
     public string obstacleTag = "Obstacle"; // Tag for obstacle objects
     public List<EnemyData> enemyTypes;   // List of enemy types for this wave
 
+    private Transform crystal;           // Reference to the "Crystal" object
     private int currentWaveIndex = 0;    // Current wave index
     private bool isSpawning = false;     // Is the wave spawner currently active?
     public bool isGameStarted = false;
@@ -28,11 +29,21 @@ public class WaveSpawner : MonoBehaviour
     {
         isSpawning = true;
 
+        // Find the Crystal object just before starting the wave
+        crystal = GameObject.FindGameObjectWithTag(crystalTag)?.transform;
+
+        if (crystal == null)
+        {
+            Debug.LogError("Crystal object not found! Make sure the Crystal tag is assigned.");
+            isSpawning = false;
+            yield break; // Stop spawning if the crystal is not found
+        }
+
         for (int i = 0; i < wave.totalEnemies; i++)
         {
             Vector3 spawnPosition;
 
-            // Attempt to find a valid spawn position
+            // Attempt to find a valid spawn position around the Crystal object
             if (FindValidSpawnPosition(out spawnPosition))
             {
                 SpawnRandomEnemy(spawnPosition, enemyTypes);
@@ -54,17 +65,26 @@ public class WaveSpawner : MonoBehaviour
 
     bool FindValidSpawnPosition(out Vector3 spawnPosition)
     {
-        // Try multiple random samples to find a valid position
+        // Make sure the crystal object is assigned
+        if (crystal == null)
+        {
+            spawnPosition = Vector3.zero;
+            return false;
+        }
+
+        // Try multiple random samples to find a valid position around the "Crystal"
         for (int i = 0; i < 50; i++)
         {
-            Vector3 randomPosition = new Vector3(
-                Random.Range(roomCenter.position.x - roomSize.x / 2, roomCenter.position.x + roomSize.x / 2),
-                roomCenter.position.y,
-                Random.Range(roomCenter.position.z - roomSize.z / 2, roomCenter.position.z + roomSize.z / 2)
-            );
+            // Calculate a random point on the circle around the Crystal
+            float angle = Random.Range(0f, 360f);
+            Vector3 offset = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * spawnRadius;
 
-            // Check for obstacles
-            if (!Physics.CheckSphere(randomPosition, spawnRadius, LayerMask.GetMask("Obstacle")))
+            // Calculate spawn position based on crystal's position and the random offset
+            Vector3 randomPosition = crystal.position + offset;
+            randomPosition.y = crystal.position.y + spawnHeight; // Adjust for height
+
+            // Check for obstacles at this position
+            if (!Physics.CheckSphere(randomPosition, spawnRadius, LayerMask.GetMask(obstacleTag)))
             {
                 spawnPosition = randomPosition;
                 return true;

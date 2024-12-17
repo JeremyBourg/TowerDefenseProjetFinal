@@ -9,12 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c726ae786bb02f745a912a60474eaeb8, type: 3}
-  m_Name: Enemy3 Level1
+  m_Script: {fileID: 11500000, guid: da58e65e5471cc442bffeb1e6587aecb, type: 3}
+  m_Name: Wave0
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 4334186955625905647, guid: dff333049f9c5c243b58d02dd3c1467b,
-    type: 3}
-  enemyMaxHealth: 50
-  enemyMovementSpeed: 0.6
-  enemyAttackDamage: 2
-  enemyFireRate: 2
+  totalEnemies: 0
+  spawnDelay: 0
