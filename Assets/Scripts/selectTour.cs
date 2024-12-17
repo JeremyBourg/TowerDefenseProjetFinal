@@ -6,6 +6,10 @@ public class selectTour : MonoBehaviour
 {
     public int selectedTower;
 
+    public void SelectCrystal()
+    {
+        selectedTower = 0;
+    }
     public void SelectFirstTower()
     {
         selectedTower = 1;
