@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: Enemy3 Level1
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 0}
-  enemyMaxHealth: 0
-  enemyType: 2
-  enemyMovementSpeed: 0
-  enemyAttackDamage: 0
-  enemyFireRate: 0
+  enemyMaxHealth: 50
+  enemyMovementSpeed: 0.6
+  enemyAttackDamage: 2
+  enemyFireRate: 2
