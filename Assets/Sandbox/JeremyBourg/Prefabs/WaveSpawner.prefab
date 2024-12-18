@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4683277414872010299
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8168386578882881038}
+  - component: {fileID: 8399803312965549988}
+  m_Layer: 0
+  m_Name: WaveSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8168386578882881038
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4683277414872010299}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8399803312965549988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4683277414872010299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d46f2f8949271dc41b6f37461110048a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waves:
+  - {fileID: 11400000, guid: 31e58bfbecb8ce044bb674d106c710f4, type: 2}
+  - {fileID: 11400000, guid: 3aa7b0670f512d5428514e88e9b8d80f, type: 2}
+  - {fileID: 11400000, guid: a725164b0db0a484b82736fd1927f579, type: 2}
+  - {fileID: 11400000, guid: d667c2f58f6bd6d4f94da3f09d16931c, type: 2}
+  - {fileID: 11400000, guid: 86df43b2484bcf6449849ef09123a628, type: 2}
+  crystalTag: Crystal
+  spawnRadius: 5
+  spawnHeight: 1
+  obstacleTag: Obstacle
+  enemyTypes:
+  - {fileID: 11400000, guid: 8755a9b262e3bbb49acddbd6debb85fd, type: 2}
+  - {fileID: 11400000, guid: c0af25a190952324a80be97d3b371ca3, type: 2}
+  isGameStarted: 1
