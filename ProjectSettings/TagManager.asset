@@ -4,11 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Tower
-  - Bullet
-  - Obstacle
-  - Enemy
-  - Crystal
   layers:
   - Default
   - TransparentFX
