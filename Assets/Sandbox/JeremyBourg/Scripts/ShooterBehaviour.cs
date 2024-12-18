@@ -32,6 +32,7 @@ public class ShooterBehaviour : MonoBehaviour
     {
         if (target == null)
         {
+            Destroy(gameObject);
             return;
         }
 
