@@ -118,6 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ba1384eaa7464742a26bb95e2c7cd07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyData: {fileID: 0}
-  bulletPrefab: {fileID: 0}
+  enemyData: {fileID: 11400000, guid: c0af25a190952324a80be97d3b371ca3, type: 2}
+  bulletPrefab: {fileID: 1322372971752962111, guid: 4bf0ad197010ced46b8c919daeb501f3,
+    type: 3}
   projectilePoint: {fileID: 0}

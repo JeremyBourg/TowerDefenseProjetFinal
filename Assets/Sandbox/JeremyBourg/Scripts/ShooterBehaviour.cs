@@ -4,29 +4,40 @@ using UnityEngine;
 
 public class ShooterBehaviour : MonoBehaviour
 {
-    public EnemyData enemyData;            
-    [SerializeField] private GameObject bulletPrefab; 
-    [SerializeField] private Transform projectilePoint; 
+    public EnemyData enemyData;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform projectilePoint;
 
-    private GameObject[] towerArray;     
-    private Transform target;            
-    private float fireTimer;               
-    private float orbitAngle = 0f;         
+    private GameObject[] towerArray;
+    private Transform target;
+    private float fireTimer;
+    private float orbitAngle = 0f;
+    private float orbitRadius = 1f;
 
     void Start()
     {
         towerArray = GameObject.FindGameObjectsWithTag("Tower");
-        target = FindClosestTower();
+
+        if (towerArray.Length == 0)
+        {
+            target = GameObject.FindGameObjectWithTag("Crystal").transform;
+        }
+        else
+        {
+            target = FindClosestTower();
+        }
     }
 
     void Update()
     {
-        if (towerArray.Length == 0) return;
-        if (target == null) target = FindClosestTower();
+        if (target == null)
+        {
+            return;
+        }
 
         OrbitAroundTower();
-
         fireTimer += Time.deltaTime;
+
         if (fireTimer >= enemyData.enemyFireRate)
         {
             FireBullet();
@@ -58,23 +69,27 @@ public class ShooterBehaviour : MonoBehaviour
     {
         if (target == null) return;
 
+        if (enemyData.enemyMovementSpeed == 0) return;
+
         orbitAngle += enemyData.enemyMovementSpeed * Time.deltaTime;
-        float orbitRadius = 1f;
         float x = target.position.x + Mathf.Cos(orbitAngle) * orbitRadius;
         float z = target.position.z + Mathf.Sin(orbitAngle) * orbitRadius;
 
         transform.position = new Vector3(x, transform.position.y, z);
 
-        Vector3 directionToTower = target.position - transform.position;
-        transform.rotation = Quaternion.LookRotation(directionToTower);
+        Vector3 directionToTarget = target.position - transform.position;
+        transform.rotation = Quaternion.LookRotation(directionToTarget);
     }
 
     void FireBullet()
     {
-        if (bulletPrefab == null || projectilePoint == null || target == null) return;
+        if (bulletPrefab == null || projectilePoint == null || target == null)
+        {
+            return;
+        }
 
         Vector3 aimDirection = target.position - projectilePoint.position;
-        float randomVariance = Random.Range(-5f, 5f); 
+        float randomVariance = Random.Range(-5f, 5f);
         Quaternion rotationVariance = Quaternion.Euler(0, randomVariance, 0);
         Vector3 randomizedDirection = rotationVariance * aimDirection.normalized;
 
@@ -82,7 +97,7 @@ public class ShooterBehaviour : MonoBehaviour
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            rb.velocity = randomizedDirection * 20f; 
+            rb.velocity = randomizedDirection * 20f;
         }
 
         Destroy(bullet, 5f);

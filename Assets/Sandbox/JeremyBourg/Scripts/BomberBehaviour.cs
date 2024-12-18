@@ -16,7 +16,14 @@ public class BomberBehaviour : MonoBehaviour
     void Start()
     {
         towerArray = GameObject.FindGameObjectsWithTag("Tower");
-        target = FindClosestTower();
+        if (towerArray.Length == 0)
+        {
+            target = GameObject.FindGameObjectWithTag("Crystal").transform;
+        }
+        else
+        {
+            target = FindClosestTower();
+        }
 
         startPosition = transform.position;
 
