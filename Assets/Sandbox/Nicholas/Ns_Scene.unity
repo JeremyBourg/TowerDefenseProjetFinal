@@ -5394,7 +5394,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &969566727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5569,7 +5569,7 @@ GameObject:
   m_Component:
   - component: {fileID: 983445479}
   m_Layer: 0
-  m_Name: --UI--
+  m_Name: -UI-
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8444,7 +8444,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1497968484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8926,7 +8926,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnOnStart: 1
-  SpawnObject: {fileID: 8231976736390597968, guid: 392bc761accc8204eb3f168b71a90fa3,
+  SpawnObject: {fileID: 7732340610694429504, guid: e8fe31e9a56e36d49845eb05c7fb948a,
     type: 3}
   SpawnAmount: 1
   MaxIterations: 1000
