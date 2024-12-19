@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2add16060d1d7bc44a843d7f8bb4ce23, type: 3}
   m_Name: crystal
   m_EditorClassIdentifier: 
-  nbPointsVies: 0
+  nbPointsVies: 15
   nbArgent: 0
   niveau: 0

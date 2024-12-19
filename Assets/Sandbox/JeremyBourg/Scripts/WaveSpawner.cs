@@ -5,7 +5,6 @@ using UnityEngine;
 public class WaveSpawner : MonoBehaviour
 {
     public List<WaveData> waves;
-    public string crystalTag = "Crystal";
     public float spawnRadius = 5f;
     public float spawnHeight = 1f;
     public string obstacleTag = "Obstacle";
@@ -27,7 +26,7 @@ public class WaveSpawner : MonoBehaviour
     IEnumerator SpawnWave(WaveData wave)
     {
         isSpawning = true;
-        crystal = GameObject.FindGameObjectWithTag(crystalTag)?.transform;
+        crystal = GameObject.FindGameObjectWithTag("Crystal")?.transform;
 
         if (crystal == null)
         {

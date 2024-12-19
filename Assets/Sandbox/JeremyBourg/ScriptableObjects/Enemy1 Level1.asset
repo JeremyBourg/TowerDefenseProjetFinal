@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c726ae786bb02f745a912a60474eaeb8, type: 3}
   m_Name: Enemy1 Level1
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 1614207946357375675, guid: 8acbef8ecd496e341b5d1e267879f7b1,
+  enemyPrefab: {fileID: 3257968702957874237, guid: 4747aa28ab924124d8eed45970071db1,
     type: 3}
-  enemyMaxHealth: 0
+  enemyMaxHealth: 50
+  enemyHealth: 0
   enemyMovementSpeed: 2
-  enemyAttackDamage: 0
-  enemyFireRate: 0
+  enemyAttackDamage: 2
+  enemyFireRate: 2

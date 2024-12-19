@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class TowerLife: MonoBehaviour
 {
-    [SerializeField] private ScriptableTower towerData;
+    [SerializeField] public ScriptableTower towerData;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -17,6 +17,20 @@ public class TowerLife: MonoBehaviour
 
             // Reduce health points of the objectToDestroy (target)
             towerData.nbPointsVies--;
+
+            // If health is 0 or less, destroy the objectToDestroy
+            if (towerData.nbPointsVies <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
+        if (other.CompareTag("Bomb"))
+        {
+            // Destroy the bullet immediately
+            Destroy(other.gameObject);
+
+            // Reduce health points of the objectToDestroy (target)
+            towerData.nbPointsVies -= 3;
 
             // If health is 0 or less, destroy the objectToDestroy
             if (towerData.nbPointsVies <= 0)

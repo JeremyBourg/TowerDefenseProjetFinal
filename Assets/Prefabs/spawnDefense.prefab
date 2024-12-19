@@ -45,12 +45,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnOnStart: 1
-  SpawnObject: {fileID: 919132149155446097, guid: 655815d3fd58a824eb7bce9abf157bff,
+  SpawnObject: {fileID: 8786331278436500958, guid: ead20eadd6a99fa409a5e69322df8956,
     type: 3}
   SpawnAmount: 1
   MaxIterations: 1000
   SpawnLocations: 3
-  Labels: 8
+  Labels: 392
   CheckOverlaps: 1
   OverrideBounds: -1
   LayerMask:
