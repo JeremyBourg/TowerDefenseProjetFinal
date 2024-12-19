@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3863570e7e6387a40ae4f323d83291e5, type: 3}
   m_Name: OculusRuntimeSettings
   m_EditorClassIdentifier: 
-  handSkeletonVersion: 0
+  handSkeletonVersion: 1
   colorSpace: 7
   requestsVisualFaceTracking: 1
   requestsAudioFaceTracking: 1
-  telemetryProjectGuid: 003dc3f8-d192-4612-873e-d8a68324ddb2
+  telemetryProjectGuid: 9b660dfd-43d3-4f60-9e3c-c02163564d35
   bodyTrackingFidelity: 1
   bodyTrackingJointSet: 0

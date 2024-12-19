@@ -22242,7 +22242,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buttonClickActions:
   - Title: 
-    Button: 1025
+    Button: 1
     ButtonMode: 0
     Callback:
       m_PersistentCalls:
