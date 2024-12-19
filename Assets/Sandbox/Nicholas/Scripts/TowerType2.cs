@@ -11,6 +11,10 @@ public class TowerType2 : MonoBehaviour
     public Vector3 originalScale = new Vector3(1f, 1f, 1f); // Original size of the shield
     public Vector3 disabledScale = new Vector3(0.1f, 0.1f, 0.1f); // Minimal size when disabled
 
+    [Header("Health Settings")]
+    [SerializeField] private GameObject objectToDestroy; // The GameObject to take damage
+    [SerializeField] private ScriptableTower towerData;
+
     private bool isGrowing = false;
     private bool isShrinking = false;
 
@@ -63,5 +67,35 @@ public class TowerType2 : MonoBehaviour
     private void StartShrinking()
     {
         isShrinking = true;
+    }
+
+    // Handle collision detection
+    private void OnTriggerEnter(Collider other)
+    {
+        // Check if the other object is a "Bullet"
+        if (other.CompareTag("Bullet"))
+        {
+            // Check if the bullet is colliding with the objectToDestroy
+            if (other.gameObject == objectToDestroy)
+            {
+                Debug.Log("touch//");
+                // Destroy the bullet immediately
+                Destroy(other.gameObject);
+
+                // Reduce health points
+                towerData.nbPointsVies--;
+
+                // If health is 0 or less, destroy the objectToDestroy
+                if (towerData.nbPointsVies <= 0)
+                {
+                    Destroy(objectToDestroy);
+                }
+            }
+            else
+            {
+                // If the bullet isn't the objectToDestroy, just destroy it
+                Destroy(other.gameObject);
+            }
+        }
     }
 }

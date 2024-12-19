@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8851233824067499265}
   - component: {fileID: 3239891578895837990}
   - component: {fileID: 1397791471795841786}
+  - component: {fileID: 8795638353281108813}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
@@ -100,7 +101,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -123,6 +124,35 @@ MonoBehaviour:
   activeDuration: 12
   originalScale: {x: 6, y: 3, z: 6}
   disabledScale: {x: 0.1, y: 0.05, z: 0.1}
+  objectToDestroy: {fileID: 7732340610694429504}
+  towerData: {fileID: 11400000, guid: 2be18694d04054b48bc813a3f05f547a, type: 2}
+--- !u!54 &8795638353281108813
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7086113258901152773}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &1833829175443846672
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -181,6 +211,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6613419486951717411, guid: 392bc761accc8204eb3f168b71a90fa3,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8231976736390597968, guid: 392bc761accc8204eb3f168b71a90fa3,
         type: 3}
       propertyPath: m_Name
@@ -194,7 +229,15 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2624917796559038328}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8231976736390597968, guid: 392bc761accc8204eb3f168b71a90fa3,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 426618854070700257}
+    - targetCorrespondingSourceObject: {fileID: 8231976736390597968, guid: 392bc761accc8204eb3f168b71a90fa3,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 559120776019869741}
   m_SourcePrefab: {fileID: 100100000, guid: 392bc761accc8204eb3f168b71a90fa3, type: 3}
 --- !u!4 &2735451813416930090 stripped
 Transform:
@@ -202,3 +245,49 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1833829175443846672}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7732340610694429504 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8231976736390597968, guid: 392bc761accc8204eb3f168b71a90fa3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1833829175443846672}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &426618854070700257
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7732340610694429504}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &559120776019869741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7732340610694429504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab8b8cc2cb0a1a4b88bde0eed3c248f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  towerData: {fileID: 11400000, guid: 2be18694d04054b48bc813a3f05f547a, type: 2}

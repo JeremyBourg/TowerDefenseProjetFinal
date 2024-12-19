@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3b495c6e584a3b4ba2dee841799cb2c, type: 3}
-  m_Name: Tower_E_Shooting
+  m_Script: {fileID: 11500000, guid: 2add16060d1d7bc44a843d7f8bb4ce23, type: 3}
+  m_Name: crystal
   m_EditorClassIdentifier: 
   nbPointsVies: 0
-  nbPointsDommages: 0
-  tempsRecharge: 0
-  vitesseDeplacement: 0
-  vitesseMissile: 0
+  nbArgent: 0
+  niveau: 0

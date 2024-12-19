@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e3b495c6e584a3b4ba2dee841799cb2c, type: 3}
-  m_Name: Tower_E_Moving
+  m_Name: Tower_Shooting
   m_EditorClassIdentifier: 
-  nbPointsVies: 100
+  nbPointsVies: 3
   nbPointsDommages: 1
-  tempsRecharge: 8
-  vitesseDeplacement: 0.3
+  tempsRecharge: 5
+  vitesseDeplacement: 0
   vitesseMissile: 1
