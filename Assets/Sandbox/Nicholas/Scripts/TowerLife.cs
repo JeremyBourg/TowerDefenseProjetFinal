@@ -5,41 +5,24 @@ using UnityEngine.UI;
 
 public class TowerLife: MonoBehaviour
 {
-    [SerializeField] private int points = 100; // The starting point value
-    private Text pointsText; // UI Text to display points
+    [SerializeField] private ScriptableTower towerData;
 
-    private void Start()
+    private void OnTriggerEnter(Collider other)
     {
-        pointsText = GameObject.Find("TowerLifePoints").GetComponent<Text>();
-        // Update the UI with the initial points
-        UpdatePointsText();
-    }
-
-    // This function is called when another collider enters this object's collider
-    private void OnCollisionEnter(Collision other)
-    {
-        // Check if the other object has the "Bullet" tag
-        if (other.gameObject.CompareTag("Bullet"))
+        // Check if the other object is a "Bullet"
+        if (other.CompareTag("Bullet"))
         {
+            // Destroy the bullet immediately
             Destroy(other.gameObject);
-            // Decrease the points by 1
-            points -= 1;
 
-            // Ensure points doesn't go below 0
-            if (points < 0)
-                points = 0;
+            // Reduce health points of the objectToDestroy (target)
+            towerData.nbPointsVies--;
 
-            // Update the UI text with the new points value
-            UpdatePointsText();
-        }
-    }
-
-    // Updates the UI Text with the current points value
-    private void UpdatePointsText()
-    {
-        if (pointsText != null)
-        {
-            pointsText.text = "Tower Health: " + points.ToString();
+            // If health is 0 or less, destroy the objectToDestroy
+            if (towerData.nbPointsVies <= 0)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

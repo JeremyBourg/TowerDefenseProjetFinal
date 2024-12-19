@@ -4,90 +4,128 @@ using UnityEngine;
 
 public class TowerType3 : MonoBehaviour
 {
-    [SerializeField] private string targetObjectName; // Name of the target GameObject
-    [SerializeField] private float moveSpeed = 5f; // Speed of the moving GameObject
-    [SerializeField] private float proximityThreshold = 0.5f; // Distance to trigger the return
-    [SerializeField] private float returnDelay = 5f; // Delay after returning to the initial position
+    [SerializeField] private GameObject projectilePrefab; // The projectile to shoot
+    [SerializeField] private Transform shootPoint; // Where the projectile spawns
+    [SerializeField] private float projectileSpeed; // Speed of the projectile
+    [SerializeField] private float respawnTime; // Time before the projectile respawns if destroyed
+    [SerializeField] private float shootInterval; // Time between each shot
+    [SerializeField] private ScriptableTower towerData; // Reference to tower data scriptable object
+    [SerializeField] private GameObject objectToDestroy; // The object to destroy when health is 0 or less
 
-    private Vector3 initialPosition; // Store the initial position of the parent GameObject
-    private GameObject targetObject; // Reference to the target GameObject
-
-    private bool isReturning = false; // Flag to indicate if the bullet is returning to its initial position
-    private bool isWaiting = false; // Flag to check if the bullet is in the waiting state
+    private List<Collider> enemiesInTrigger = new List<Collider>(); // List to track enemies inside the trigger area
 
     void Start()
     {
-        // Save the initial position of the parent GameObject
-        initialPosition = transform.position;
-
-        // Find the target GameObject by name
-        targetObject = GameObject.Find(targetObjectName);
-
-        if (targetObject == null)
-        {
-            Debug.LogError($"Target GameObject with name '{targetObjectName}' not found.");
-        }
+        // Initialize values from the ScriptableTower
+        projectileSpeed = towerData.vitesseMissile;
+        respawnTime = towerData.tempsRecharge;
+        shootInterval = towerData.tempsRecharge;
     }
 
     void Update()
     {
-        // Continuously update the targetObject reference in case it moves
-        if (targetObject == null)
+        // Check if the tower's health is 0 or less
+        if (towerData.nbPointsVies <= 0)
         {
-            targetObject = GameObject.Find(targetObjectName);
+            Destroy(objectToDestroy); // Destroy the specified GameObject
+            Debug.Log("Tower health is 0 or less. Destroying the object.");
+        }
+    }
 
-            if (targetObject == null)
-            {
-                Debug.LogWarning($"Target GameObject with name '{targetObjectName}' not found during update.");
-                return;
-            }
+    private void OnTriggerEnter(Collider other)
+    {
+        // If the object is tagged "Bullet", subtract 1 from nbPointsVies
+        if (other.CompareTag("Bullet"))
+        {
+            towerData.nbPointsVies -= 1;
+            Debug.Log("Bullet hit tower. Remaining health: " + towerData.nbPointsVies);
         }
 
-        // If the bullet is returning, teleport it directly to the initial position and start the wait timer
-        if (isReturning && !isWaiting)
+        // Add enemy to the list when they enter the trigger
+        if (other.CompareTag("Enemy"))
         {
-            transform.position = initialPosition; // Teleport instantly
-            isReturning = false; // Stop returning after teleport
-            StartCoroutine(WaitAfterReturn()); // Start the wait timer
-        }
-        else if (!isWaiting)
-        {
-            // Move towards the target until within the proximity threshold
-            if (targetObject != null)
+            if (!enemiesInTrigger.Contains(other))
             {
-                // Calculate the step size based on the moveSpeed and frame time
-                float step = moveSpeed * Time.deltaTime;
-
-                // Move towards the target position
-                transform.position = Vector3.MoveTowards(transform.position, targetObject.transform.position, step);
-
-                // Trigger return if within proximity of the target
-                if (Vector3.Distance(transform.position, targetObject.transform.position) <= proximityThreshold)
-                {
-                    isReturning = true;
-                }
+                enemiesInTrigger.Add(other);
+                StartCoroutine(ShootAtEnemies()); // Start shooting at the enemy
+                Debug.Log("Enemy entered trigger: " + other.name);
             }
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerExit(Collider other)
     {
-        // Check if the collided object matches the target object
-        if (collision.gameObject == targetObject)
+        // Remove enemy from the list when they exit the trigger
+        if (other.CompareTag("Enemy"))
         {
-            Debug.Log("Collision detected with target object!");
-            // Start returning to the initial position
-            isReturning = true;
+            enemiesInTrigger.Remove(other);
+            Debug.Log("Enemy exited trigger: " + other.name);
         }
     }
 
-    private IEnumerator WaitAfterReturn()
+    private IEnumerator ShootAtEnemies()
     {
-        isWaiting = true; // Set the waiting flag to true
+        while (enemiesInTrigger.Count > 0)
+        {
+            foreach (Collider enemy in enemiesInTrigger)
+            {
+                ShootProjectile(enemy.transform);
+            }
+            yield return new WaitForSeconds(shootInterval); // Wait before shooting again
+        }
+    }
 
-        // Wait for the specified delay time (5 seconds)
-        yield return new WaitForSeconds(returnDelay);
+    private void ShootProjectile(Transform target)
+    {
+        Debug.Log("Shooting projectile at target: " + target.name); // Debug log to confirm projectile shooting
+        GameObject projectile = Instantiate(projectilePrefab, shootPoint.position, Quaternion.identity);
 
-        isWaiting = false; // Stop waiting after the delay
+        // Set the scale of the instantiated projectile
+        projectile.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+
+        // Add the follow script dynamically
+        ProjectileFollower projectileScript = projectile.AddComponent<ProjectileFollower>();
+        projectileScript.SetTarget(target, projectileSpeed);
+    }
+
+    // Inner class for the projectile following logic
+    public class ProjectileFollower : MonoBehaviour
+    {
+        private Transform target;
+        private float speed;
+
+        public Transform Target => target;
+
+        public void SetTarget(Transform target, float speed)
+        {
+            this.target = target;
+            this.speed = speed;
+        }
+
+        private void Update()
+        {
+            if (target != null)
+            {
+                // Move towards the target
+                transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+                // Rotate to face the target
+                Vector3 direction = (target.position - transform.position).normalized;
+                transform.rotation = Quaternion.LookRotation(direction);
+            }
+            else
+            {
+                Destroy(gameObject); // Destroy the projectile if the target no longer exists
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            // Check if the projectile collides with the enemy
+            if (other.CompareTag("Enemy"))
+            {
+                Destroy(gameObject); // Destroy the projectile on collision with enemy
+                Debug.Log("Projectile destroyed on collision with enemy.");
+            }
+        }
     }
 }
