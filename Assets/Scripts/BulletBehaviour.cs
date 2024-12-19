@@ -6,7 +6,7 @@ public class BulletBehavior : MonoBehaviour
 {
     
     void OnTriggerEnter(Collider other){
-        if(other.CompareTag("Tower")){
+        if(other.CompareTag("Tower") || other.CompareTag("Crystal")){
             Destroy(gameObject);
         }
     }
